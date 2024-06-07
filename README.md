@@ -25,6 +25,9 @@ resource "aws_s3_bucket" "first_tf_bucket" {
 terraform init
 
 //STEP 2: Terraform apply/plan
-terraform apply
-terraform plan
+terraform plan //gives a gitst of what tf will do to acheive state.
+terraform apply //create the resources.
+
+//STEP 3: Destroy the created resource with one command.
+terraform destroy //destroys the resources create via tf file.
 ```
