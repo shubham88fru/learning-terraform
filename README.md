@@ -108,3 +108,35 @@ resource "aws_vpc" "ohio_vpc" {
   provider = aws.ohio //chose ohio
 }
 ```
+
+- A data source in terraform is used to fetch data from a resource that is not managed by the current terraform project. This allows it to be used in the current project.
+
+```terraform
+provider "aws" {
+  region = "us-east-2"
+}
+
+data "aws_s3_bucket" "bucket" {
+  bucket = "my-already-existing-bucket"
+}
+
+resource "aws_iam_policy" "my_bucket_policy" {
+  name = "my-bucket-policy"
+  policy = <<EOF //start of a multi line string
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Action": [
+          "s3:ListBucket"
+        ],
+        "Effect": "Allow",
+        "Resource": [
+          "${data.aws_s3_bucket.bucket.arn}"
+        ]
+      }
+    ]
+  }
+  EOF //end of multi line string.
+}
+```
