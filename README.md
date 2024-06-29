@@ -109,7 +109,7 @@ resource "aws_vpc" "ohio_vpc" {
 }
 ```
 
-- A data source in terraform is used to fetch data from a resource that is not managed by the current terraform project. This allows it to be used in the current project.
+- A data source in terraform is used to fetch data from a resource that is not managed by the current terraform project. This allows it to be used in the current project. Once referenced in the terraform file, the data source can be accessed as `data.<data_type>.<data_identifier>.<attribute_name>`.
 
 ```terraform
 provider "aws" {
@@ -132,7 +132,7 @@ resource "aws_iam_policy" "my_bucket_policy" {
         ],
         "Effect": "Allow",
         "Resource": [
-          "${data.aws_s3_bucket.bucket.arn}"
+          "${data.aws_s3_bucket.bucket.arn}" //since we're in a string, use interpolation to evaluate.
         ]
       }
     ]
