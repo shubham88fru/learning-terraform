@@ -140,3 +140,33 @@ resource "aws_iam_policy" "my_bucket_policy" {
   EOF //end of multi line string.
 }
 ```
+
+```terraform
+//a terraform output block.
+//outputs the value on to the console when `terraform apply`
+//output blocks are more like a javascripts `console.log`?
+output "message" {
+  value = "Hello, world!"
+}
+
+//outputing resource properties.
+provider "aws" {
+  region = "us-east-2"
+}
+
+resource "aws_s3_bucket" "first_bucket" {
+  bucket = "my-bucket"
+}
+
+output "bucket_name" {
+  value = aws_s3_bucket.first_bucket.id
+}
+
+output "bucket_arn" {
+  value = aws_s3_bucket.first_bucket.arn
+}
+
+output "bucket_information" {
+  value = "bucket name: ${aws_s3_bucket.first_bucket.id}, bucket arn: ${aws_s3_bucket.first_bucket.arn}"
+}
+```
