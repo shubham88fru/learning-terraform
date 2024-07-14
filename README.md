@@ -170,3 +170,22 @@ output "bucket_information" {
   value = "bucket name: ${aws_s3_bucket.first_bucket.id}, bucket arn: ${aws_s3_bucket.first_bucket.arn}"
 }
 ```
+
+```terraform
+//'local' in terraform is like variables in a normal programming language. Confusingly , terraform also has a concept of a variable which is basically an input.
+//a local block is defined with `locals` keyword.
+
+provider "aws" {
+  region = "eu-west-1"
+}
+
+locals {
+  first_part = "hello"
+  second_part = "${local.first_part}-there"
+  bucket_name = "${local.second_part}-how-are-you-today"
+}
+
+resource "aws_s3_bucket" "bucket" {
+  bucket = local.bucket_name
+}
+```
