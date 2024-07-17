@@ -189,3 +189,45 @@ resource "aws_s3_bucket" "bucket" {
   bucket = local.bucket_name
 }
 ```
+
+```terraform
+//file(...) - used to reference a file, it sets the value of the variable to the contents of the file.
+//main.tf
+provider "aws" {
+  region = "eu-west-1"
+}
+
+resource "aws_iam_policy" "my_bucket_policy" {
+  name = "list-buckets-policy"
+  policy = file("./policy.iam")
+}
+
+//policy.iam
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "s3:ListBucket"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+```terraform
+//templatefile(...) - this function allows us to define placeholders in a template file and then pass their values at runtime.
+//main.tf
+locals {
+  rendered = templatefile("./example.tpl", { name = "kevin", number = 7})
+}
+
+output "rendered_template" {
+  value = local.rendered
+}
+
+//example.tpl
+hello there ${name}. There are ${number} things to say.
+```
