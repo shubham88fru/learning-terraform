@@ -231,3 +231,19 @@ output "rendered_template" {
 //example.tpl
 hello there ${name}. There are ${number} things to say.
 ```
+
+```terraform
+//A variable in terraform is something that can be set at runtime. It allows you to vary what Terraform will do by passing in or using a dynamic value. Variables are basically used to take user inputs.
+
+provider "aws" {
+  region = "us-east-2"
+}
+
+variable "bucket_name" {
+  description = "the name of the bucket you wish to create"
+}
+
+resource "aws_s3_bucket" "bucket" {
+  bucket = var.bucket_name //a variable is referenced using `var`
+}
+```
