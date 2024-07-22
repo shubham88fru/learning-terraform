@@ -247,3 +247,25 @@ resource "aws_s3_bucket" "bucket" {
   bucket = var.bucket_name //a variable is referenced using `var`
 }
 ```
+
+```bash
+#A way to supply value for variables through command line.
+terraform apply -var bucket_name=first_bucket -var bucket_suffix=foo
+
+#Supply values for variables through env variable.
+#To do this, the env variables should be named per this convention
+#TF_VAR_<variable_identifier>
+export TF_VAR_bucket_name=first_bucket
+export TF_VAR_bucket_suffix=fluff
+```
+
+```terraform
+//Another way to set values for variables is through a file named
+//`terraform.tfvars`. It is a special file name that terraform looks at for values of variables.
+
+//if we want a custom name for the file, name then with an extension `.auto.tfvars`.
+
+//e.g. terraform.tfvars file
+bucket_name="first_bucket"
+bucket_suffix="fluff"
+```
