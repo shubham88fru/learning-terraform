@@ -269,3 +269,55 @@ export TF_VAR_bucket_suffix=fluff
 bucket_name="first_bucket"
 bucket_suffix="fluff"
 ```
+
+```terraform
+//more  complex variables
+//main.tf
+variable "instance_map" {}
+variable "environment_type" {}
+
+output "selected_instance" {
+  value = var.instance_map[var.environment_type]
+}
+
+//terraform.tfvars
+instance_map = {
+  dev = "t3.small"
+  test = "t3.medium"
+  prod = "t3.large"
+}
+
+environment_type = "dev"
+```
+
+```terraform
+//variable type constraints
+//basic types: string, bool, number
+//complext types: list(<TYPE>), set(<TYPE>), map(<TYPE>), object(), type([<TYPE>, ...])
+variable "a" {
+  type = string
+  default = "foo"
+}
+
+variable "b" {
+  type = bool
+  default = true //could assing any truthy or falsy.
+}
+
+variable "c" {
+  type = number
+  deafult = 123
+}
+
+output "a" {
+  value = var.a
+}
+
+output "b" {
+  value = var.b
+}
+
+output "c" {
+  value = var.c
+}
+```
