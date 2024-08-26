@@ -321,3 +321,133 @@ output "c" {
   value = var.c
 }
 ```
+
+```terraform
+//List type
+variable "a" {
+  type = list(string)
+  default = ["foo", "bar", "baz"]
+}
+
+output "a" {
+  value = var.a
+}
+
+output "b" {
+  value = element(var.a, 1) //return item at index 1 in the list.
+}
+
+output "c" {
+  value = length(var.a)
+}
+```
+
+```terraform
+//Set type
+variable "my_set" {
+  type = set(number)
+  deafult = [7, 2, 2]
+}
+
+variable "my_list" {
+  type = list(string)
+  deafult = ["foo", "bar", "foo"]
+}
+
+output "set" {
+  value = var.my_set
+}
+
+output "list" {
+  value = var.my_list
+}
+
+output "list_as_set" {
+  value = toset(var.my_list)
+}
+```
+
+```terraform
+//Tuple type
+variable "my_tup" {
+  type = tuple([number, string, bool])
+  default = [4, "hello", false]
+}
+
+output "tup" {
+  value = var.my_tup
+}
+```
+
+```terraform
+//Map type
+variable "my_map" {
+  type = map(number) //a where values will be numbers.
+  default = {
+    "alpha" = 2
+    "bravo" = 3
+  }
+}
+
+output "map" {
+  value = var.my_map
+}
+
+output "alpha_value" {
+  value = var.my_map["alpha"]
+}
+```
+
+```terraform
+//Object type
+variable "person" {
+  type = object({ name = string, age = number })
+  default = {
+    name = "bob"
+    age = 10
+  }
+}
+
+output "person" {
+  value = var.person
+}
+
+variable "person_with_address" {
+  type = object({ name=string, age=number, address=object({
+    line1=string, line2=string, county=string, postcode=string})
+    })
+
+  default = {
+    name = "Jim"
+    age = 21
+    address = {
+      line1 = "1 the road"
+      line2 = "St Ives"
+      county = "Cambridgeshire"
+      postcode = "CB1 2GB"
+    }
+  }
+}
+
+output "person_with_address" {
+  value = var.person_with_address
+}
+```
+
+```terraform
+//Any type - The any type is a special constrcut that
+//serves as a placeholder for a type yet to be decided. `any` itself
+//is not a type. Terraform will attempt to calculate the type at
+//runtime when you use `any`.
+variable "any_example" {
+  type = any
+  default = {
+    field1 = "foo"
+    field2 = "bar"
+  }
+}
+
+output "any_example" {
+  value = var.any_example
+}
+```
