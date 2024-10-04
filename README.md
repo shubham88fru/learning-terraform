@@ -451,3 +451,94 @@ output "any_example" {
   value = var.any_example
 }
 ```
+
+```terraform
+//modules.
+//A module in terraform is a mini Terraform project in itself
+//that can contain all of the same constructs as our main
+//Terraform project(resources, data blocks, locals, etc.)
+//Modules let us define a reusable block of Terraform code.
+
+/*
+  Folder structure.
+  - sqs-with-backoff/
+      -- main.tf
+      -- variables.tf
+      -- output.tf
+  - main.tf
+*/
+
+// `/main.tf`
+provider "aws" {
+  region = "eu-west-1"
+}
+
+module "work_queue" {
+  source = "./sqs-with-backoff" //define the folder as a moudle.
+  queue_name = "work-queue"
+}
+
+output "work_queue_name" {
+  value = module.work_queue.queue_name
+}
+
+output "work_queue_dead_letter_name" {
+  value = module.work_queue.dead_letter_queue_name
+}
+
+// `/sqs-with-backoff/variables.tf`
+//Variables have a special meaning when used
+//with a module; they become the input values for
+//your moudle.
+//If a default value is not provided for variable
+//in a module, it will have to be provided when using
+//the module.
+variable "queue_name" {
+  description = "Name of queue"
+}
+
+variable "max_receive_count" {
+  description = "The maximum number of times that a message can be received by consumers"
+  default = 5
+}
+
+variable "visibility_timeout" {
+  deafult = 30
+}
+
+// `/sqs-with-backoff/output.tf`
+output "queue_arn" {
+  value = aws_sqs_queue.sqs.arn
+}
+
+output "queue_name" {
+  value = aws_sqs_queue.sqs.name
+}
+
+output "dead_letter_queue_arn" {
+  value = aws_sqs_queue.sqs_dead_letter.arn
+}
+
+output "dead_letter_queue_name" {
+  value = aws_sqs_queue.sqs_dead_letter.name
+}
+
+// `/sqs-with-backoff/main.tf`
+resource "aws_sqs_queue" "sqs" {
+  name = "awesome_co-${var.queue_name}"
+  visibility_timeout_seconds = var.visibility_timeout
+  delay_seconds = 0
+  max_message_size = 262144
+  message_retention_seconds = 345600
+  receive_wait_time_seconds = 20
+  redrive_policy= "{\"deadLetterTargetArn\":\"${aws_sqs_queue.sqs_dead_letter.arn}\", \"maxReceiveCount\": ${var.max_receive_count}}"
+}
+
+resource "aws_sqs_queue" "sqs_dead_letter" {
+  name = "awsome_co_${var.queue_name}-dead-letter"
+  delay_seconds = 0
+  max_message_size = 262144
+  message_retention_seconds = 1209600
+  receive_wait_time_seconds = 20
+}
+```
