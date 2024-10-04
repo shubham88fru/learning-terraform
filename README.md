@@ -478,6 +478,7 @@ module "work_queue" {
   queue_name = "work-queue"
 }
 
+//accessing values returned from a module.
 output "work_queue_name" {
   value = module.work_queue.queue_name
 }
@@ -507,6 +508,9 @@ variable "visibility_timeout" {
 }
 
 // `/sqs-with-backoff/output.tf`
+// Outputs are way for a modules to
+// return values. Returned values in a module can be
+// used in the main Terraform project.
 output "queue_arn" {
   value = aws_sqs_queue.sqs.arn
 }
