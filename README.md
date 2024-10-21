@@ -546,3 +546,16 @@ resource "aws_sqs_queue" "sqs_dead_letter" {
   receive_wait_time_seconds = 20
 }
 ```
+
+```terraform
+# Plans
+# A terraform plan tells you what all changes is terraform
+# going to make in the environment, like -
+# 1. What terraform will create.
+# 2. What terraform will destroy, and
+# 3. What terraform will update.
+# It is your chance to see if you agree what terraform is going to do
+# before it goes ahead and potentially wrecks hevoc!
+
+# running `terraform apply` directly does a plan first.
+```
