@@ -549,16 +549,24 @@ resource "aws_sqs_queue" "sqs_dead_letter" {
 
 ```terraform
 # Plans
-# A terraform plan tells you what all changes is terraform
-# going to make in the environment, like -
-# 1. What terraform will create.
-# 2. What terraform will destroy, and
-# 3. What terraform will update.
-# It is your chance to see if you agree what terraform is going to do
-# before it goes ahead and potentially wrecks hevoc!
+// A terraform plan tells you what all changes is terraform
+// going to make in the environment, like -
+// 1. What terraform will create.
+// 2. What terraform will destroy, and
+// 3. What terraform will update.
+// It is your chance to see if you agree what terraform is going to do
+// before it goes ahead and potentially wrecks hevoc!
 
-# running `terraform apply` directly does a plan first.
+// running `terraform apply` directly does a plan first.
 
-# `terraform plan` just prepares and outputs the plan, doesn't apply it.
-# `terraform apply` prepares the plan, display it, and asks for permission to apply it.
+// `terraform plan` just prepares and outputs the plan, doesn't apply it.
+// `terraform apply` prepares the plan, display it, and asks for permission to apply it.
+
+//save a plan to a file named - myplan.
+terraform plan -out myplan
+
+//Apply a saved plan.
+//In this case, terraform doesn't stop to ask for permission,
+//goes ahead and applies the plan directly.
+terraform apply myplan
 ```
