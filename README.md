@@ -558,4 +558,7 @@ resource "aws_sqs_queue" "sqs_dead_letter" {
 # before it goes ahead and potentially wrecks hevoc!
 
 # running `terraform apply` directly does a plan first.
+
+# `terraform plan` just prepares and outputs the plan, doesn't apply it.
+# `terraform apply` prepares the plan, display it, and asks for permission to apply it.
 ```
