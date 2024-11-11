@@ -570,3 +570,19 @@ terraform plan -out myplan
 //goes ahead and applies the plan directly.
 terraform apply myplan
 ```
+
+```terraform
+# State
+// The default storage for a terraform state in a local file called `terraform.stfstate`.
+// By default, terraform only manages and keeps state of the resources that
+// it itself created on the cloud provider. However, we can `import` an existing
+// resource from the cloud provider and let terraform manage that as well.
+terraform import <resource_type>.<resource_identifier> <value> # here value is usually the unique id of the resource.
+
+//To make terraform stop managing a resource, we have to remove it from terraform's state.
+//Note that there is a difference between deleting a resource v/s asking terraform to stop
+//mnanaging a resource. In the former, the resource is deleted altogether from the cloud provider,
+//while in the later, the resource still exists on the provider, but its removed from terraform's state
+//which means, terraform will no longer manage it.
+terraform state rm <resource_name>.<resource_identifier>
+```
